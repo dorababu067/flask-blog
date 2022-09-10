@@ -19,10 +19,10 @@ login_manager.login_message_category = "info"
 def create_app(config_class=Config):
 
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_object(config_class)
 
     db.init_app(app)
-    migrate.init_app(app, db)
+    migrate.init_app(app, db, render_as_batch=True)
     bcrypt.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
@@ -31,7 +31,6 @@ def create_app(config_class=Config):
     from blog.main.views import main
     from blog.posts.views import posts
     from blog.users.views import users
-    from blog import models
 
     app.register_blueprint(main)
     app.register_blueprint(posts)
